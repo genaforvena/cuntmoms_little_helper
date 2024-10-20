@@ -17,7 +17,7 @@ async def fetch_messages_last_week(bot_token, chat_id):
     try:
         updates = await bot.get_updates()
         for update in updates:
-            if update.message and update.message.date > one_week_ago:
+            if update.message and update.message.date.replace(tzinfo=None) > one_week_ago:
                 messages.append(update.message)
     except InvalidToken as e:
         print(f"Error: {e}. Please check your bot token.")
