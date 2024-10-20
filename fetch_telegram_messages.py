@@ -1,6 +1,7 @@
 import datetime
 import asyncio
 from telegram import Bot
+from telegram.error import InvalidToken
 import config
 
 async def fetch_messages_last_week(bot_token, chat_id):
@@ -9,10 +10,14 @@ async def fetch_messages_last_week(bot_token, chat_id):
     one_week_ago = current_time - datetime.timedelta(days=7)
     messages = []
 
-    updates = await bot.get_updates()
-    for update in updates:
-        if update.message and update.message.date > one_week_ago:
-            messages.append(update.message)
+    try:
+        updates = await bot.get_updates()
+        for update in updates:
+            if update.message and update.message.date > one_week_ago:
+                messages.append(update.message)
+    except InvalidToken as e:
+        print(f"Error: {e}. Please check your bot token.")
+        return []
 
     return messages
 
