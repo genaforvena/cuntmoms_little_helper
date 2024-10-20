@@ -28,7 +28,11 @@ async def fetch_messages_last_week(bot_token, chat_id):
 
     return messages
 
+import sys
+import io
+
 if __name__ == "__main__":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
     bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     if not bot_token:
         bot_token = input("Please enter your bot token: ")
