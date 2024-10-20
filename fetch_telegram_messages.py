@@ -29,6 +29,7 @@ if __name__ == "__main__":
     bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     if not bot_token:
         bot_token = input("Please enter your bot token: ")
+    print(f"Using bot token: {bot_token}")  # Debug print
     chat_id = "YOUR_CHAT_ID"
     loop = asyncio.get_event_loop()
     messages = loop.run_until_complete(fetch_messages_last_week(bot_token, chat_id))
