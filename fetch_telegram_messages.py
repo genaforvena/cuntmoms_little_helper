@@ -3,6 +3,7 @@ import asyncio
 from telegram import Bot
 from telegram.error import InvalidToken, Conflict
 import os
+from database import init_db, store_message, retrieve_messages_in_batches
 
 async def delete_webhook(bot_token):
     bot = Bot(token=bot_token)
@@ -41,5 +42,16 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(delete_webhook(bot_token))
     messages = loop.run_until_complete(fetch_messages_last_week(bot_token, chat_id))
+    
+    # Initialize the database
+    init_db()
+    
+    # Store messages in the database
     for message in messages:
-        print(f"From: {message.from_user.username}, Date: {message.date}, Text: {message.text}")
+        store_message(message)
+    
+    # Retrieve messages in batches and print them
+    batch_size = 5
+    for batch in retrieve_messages_in_batches(batch_size):
+        for message in batch:
+            print(f"From: {message['username']}, Date: {message['date']}, Text: {message['text']}")
