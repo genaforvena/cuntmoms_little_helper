@@ -54,4 +54,4 @@ if __name__ == "__main__":
     batch_size = 5
     for batch in retrieve_messages_in_batches(batch_size):
         for message in batch:
-            print(f"From: {message['username']}, Date: {message['date']}, Text: {message['text']}")
+            print(f"From: {message.get('username', 'Unknown')}, Date: {message.get('date', 'Unknown')}, Text: {message.get('text', 'Unknown')}")
